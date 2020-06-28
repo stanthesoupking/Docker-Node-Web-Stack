@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./app/static:/var/www/html
+      - ./config/nginx:/etc/nginx/conf.d
+      - ./logs/nginx:/var/log/nginx
+    depends_on:
+      - api
+
+  api:
+    build:
+      context:
+        ./docker/node
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./app/api:/app
+    command: yarn start
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    restart: always
+    ports:
+        - "8080:80"
+    environment:
+      MYSQL_ROOT_PASSWORD: toor
+      PMA_HOST: sql
+
+  sql:
+    image: mariadb:latest
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data/sql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: toor
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: example
+      MYSQL_DATABASE: app
