@@ -33,6 +33,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: toor
       PMA_HOST: sql
+      PMA_USER: root
+      PMA_PASSWORD: toor
 
   sql:
     image: mariadb:latest
