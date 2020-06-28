@@ -22,6 +22,8 @@ services:
     volumes:
       - ./app/api:/app
     command: yarn start
+    depends_on:
+      - sql
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
